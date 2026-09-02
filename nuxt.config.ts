@@ -1,4 +1,9 @@
-const pollingOptions = { usePolling: true, interval: 300 }
+import type { WatchOptions } from 'vite'
+
+const pollingOptions: WatchOptions = {
+  usePolling: true,
+  interval: 300
+}
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-09-01',
