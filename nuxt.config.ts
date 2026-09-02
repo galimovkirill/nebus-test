@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url'
 import type { WatchOptions } from 'vite'
 
 const pollingOptions: WatchOptions = {
@@ -17,6 +18,8 @@ export default defineNuxtConfig({
   },
 
   modules: ['@pinia/nuxt', '@nuxt/eslint'],
+
+  css: ['~/assets/scss/main.scss'],
 
   components: false,
 
@@ -40,6 +43,15 @@ export default defineNuxtConfig({
   vite: {
     server: {
       watch: pollingOptions
+    },
+
+    css: {
+      preprocessorOptions: {
+        scss: {
+          loadPaths: [fileURLToPath(new URL('./app/assets/scss', import.meta.url))],
+          additionalData: '@use "shared" as *;\n'
+        }
+      }
     }
   }
 })
