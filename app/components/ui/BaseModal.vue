@@ -35,15 +35,20 @@ function onKeydown(event: KeyboardEvent) {
   }
 }
 
-watch(open, (value) => {
-  if (value) {
-    document.addEventListener('keydown', onKeydown)
-    document.body.style.overflow = 'hidden'
-  } else {
-    document.removeEventListener('keydown', onKeydown)
-    document.body.style.overflow = ''
-  }
-})
+watch(
+  open,
+  (value, oldValue) => {
+    if (value) {
+      document.addEventListener('keydown', onKeydown)
+      document.body.style.overflow = 'hidden'
+    } else {
+      if (oldValue === undefined) return
+      document.removeEventListener('keydown', onKeydown)
+      document.body.style.overflow = ''
+    }
+  },
+  { immediate: true }
+)
 
 onBeforeUnmount(() => {
   document.removeEventListener('keydown', onKeydown)

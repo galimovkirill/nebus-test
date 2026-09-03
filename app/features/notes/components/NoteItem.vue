@@ -8,6 +8,8 @@
       :disabled="!editable"
       borderless
       :placeholder="placeholder"
+      @focus="emit('textFocus')"
+      @blur="emit('textBlur')"
     />
 
     <BaseButton
@@ -38,6 +40,8 @@ withDefaults(
 
 const emit = defineEmits<{
   remove: []
+  textFocus: []
+  textBlur: []
 }>()
 
 const done = defineModel<boolean>('done', { default: false })

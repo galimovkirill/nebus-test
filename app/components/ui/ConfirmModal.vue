@@ -5,7 +5,9 @@
     <p class="confirm-modal__message">{{ message }}</p>
 
     <template #footer>
-      <BaseButton variant="text" autofocus @click="open = false">{{ cancelText }}</BaseButton>
+      <BaseButton ref="cancelButtonRef" variant="text" @click="open = false">
+        {{ cancelText }}
+      </BaseButton>
 
       <BaseButton :variant="danger ? 'danger' : 'primary'" @click="confirm">
         {{ confirmText }}
@@ -15,6 +17,7 @@
 </template>
 
 <script setup lang="ts">
+import { nextTick, ref, watch } from 'vue'
 import BaseButton from '~/components/ui/BaseButton.vue'
 import BaseModal from '~/components/ui/BaseModal.vue'
 
@@ -38,6 +41,19 @@ const emit = defineEmits<{
 }>()
 
 const open = defineModel<boolean>('open', { required: true })
+
+const cancelButtonRef = ref<InstanceType<typeof BaseButton>>()
+
+watch(
+  open,
+  async (isOpen) => {
+    if (!isOpen) return
+
+    await nextTick()
+    ;(cancelButtonRef.value?.$el as HTMLElement | undefined)?.focus()
+  },
+  { immediate: true }
+)
 
 const confirm = () => {
   emit('confirm')
