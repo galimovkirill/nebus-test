@@ -1,7 +1,7 @@
 <script setup lang="ts">
 withDefaults(
   defineProps<{
-    variant?: 'primary' | 'secondary'
+    variant?: 'primary' | 'secondary' | 'text'
     size?: 'md' | 'sm'
     type?: 'button' | 'submit'
     disabled?: boolean
@@ -63,6 +63,18 @@ withDefaults(
 
     &:hover:not(:disabled) {
       background: var(--c-surface-muted);
+    }
+  }
+
+  &--text {
+    background: transparent;
+    color: var(--c-accent);
+    padding: 0;
+    min-height: auto;
+
+    &:hover:not(:disabled) {
+      background: inherit;
+      color: var(--c-accent-hover);
     }
   }
 }
