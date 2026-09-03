@@ -3,9 +3,9 @@
     v-model="model"
     class="input"
     :class="{ 'input--borderless': borderless }"
-    :type="type"
-    :placeholder="placeholder"
-    :disabled="disabled"
+    :type
+    :placeholder
+    :disabled
   />
 </template>
 
@@ -44,12 +44,6 @@ const model = defineModel<string>({ default: '' })
   &:focus {
     outline: none;
     border-color: var(--c-focus);
-  }
-
-  &:disabled {
-    background: var(--c-surface-muted);
-    opacity: 0.45;
-    cursor: not-allowed;
   }
 
   &--borderless {
