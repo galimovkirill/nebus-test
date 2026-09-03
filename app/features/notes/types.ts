@@ -1,3 +1,5 @@
+export const NOTES_SCHEMA_VERSION = 1
+
 export interface NoteTask {
   id: string
   text: string

@@ -1,13 +1,22 @@
 import { ref, watch, type Ref } from 'vue'
 
-export const usePersistedRef = <T>(key: string, defaultValue: T): Ref<T> => {
+interface PersistedWrapper<T> {
+  version: number
+  data: T
+}
+
+export const usePersistedRef = <T>(key: string, defaultValue: T, version: number): Ref<T> => {
   let initial = defaultValue
 
   try {
     const stored = localStorage.getItem(key)
 
     if (stored !== null) {
-      initial = JSON.parse(stored)
+      const wrapper = JSON.parse(stored) as PersistedWrapper<T>
+
+      if (wrapper.version === version) {
+        initial = wrapper.data
+      }
     }
   } catch {
     initial = defaultValue
@@ -18,7 +27,8 @@ export const usePersistedRef = <T>(key: string, defaultValue: T): Ref<T> => {
   watch(
     state,
     (value) => {
-      localStorage.setItem(key, JSON.stringify(value))
+      const wrapper: PersistedWrapper<T> = { version, data: value }
+      localStorage.setItem(key, JSON.stringify(wrapper))
     },
     { deep: true }
   )

@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia'
 import { usePersistedRef } from '~/composables/usePersistedRef'
 import { StorageKeys } from '~/constants/storageKeys'
-import type { Note } from '~/features/notes/types'
+import { NOTES_SCHEMA_VERSION, type Note } from '~/features/notes/types'
 
 export const useNotesStore = defineStore('notes', () => {
-  const notes = usePersistedRef<Note[]>(StorageKeys.Notes, [])
+  const notes = usePersistedRef<Note[]>(StorageKeys.Notes, [], NOTES_SCHEMA_VERSION)
 
   const addNote = (note: Note) => {
     notes.value.unshift(note)
