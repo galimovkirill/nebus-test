@@ -89,6 +89,7 @@ onBeforeUnmount(() => {
     justify-content: flex-end;
     gap: $space-2;
     border-top: 1px solid var(--c-border-strong);
+    padding-top: $space-4;
   }
 }
 </style>
