@@ -1,4 +1,4 @@
-import { ref, watch, type Ref } from 'vue'
+import { onScopeDispose, ref, watch, type Ref } from 'vue'
 
 interface PersistedWrapper<T> {
   version: number
@@ -6,23 +6,18 @@ interface PersistedWrapper<T> {
 }
 
 export const usePersistedRef = <T>(key: string, defaultValue: T, version: number): Ref<T> => {
-  let initial = defaultValue
+  const parse = (raw: string | null): T => {
+    if (raw === null) return defaultValue
 
-  try {
-    const stored = localStorage.getItem(key)
-
-    if (stored !== null) {
-      const wrapper = JSON.parse(stored) as PersistedWrapper<T>
-
-      if (wrapper.version === version) {
-        initial = wrapper.data
-      }
+    try {
+      const wrapper = JSON.parse(raw) as PersistedWrapper<T>
+      return wrapper.version === version ? wrapper.data : defaultValue
+    } catch {
+      return defaultValue
     }
-  } catch {
-    initial = defaultValue
   }
 
-  const state = ref<T>(initial) as Ref<T>
+  const state = ref<T>(parse(localStorage.getItem(key))) as Ref<T>
 
   watch(
     state,
@@ -32,6 +27,14 @@ export const usePersistedRef = <T>(key: string, defaultValue: T, version: number
     },
     { deep: true }
   )
+
+  const onStorage = (event: StorageEvent) => {
+    if (event.key !== key) return
+    state.value = parse(event.newValue)
+  }
+
+  window.addEventListener('storage', onStorage)
+  onScopeDispose(() => window.removeEventListener('storage', onStorage))
 
   return state
 }
