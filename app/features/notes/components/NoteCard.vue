@@ -9,20 +9,25 @@
       </div>
     </header>
 
-    <ul v-if="note.tasks.length" class="note-card__tasks">
-      <NoteItem v-for="task in note.tasks" :key="task.id" :text="task.text" :done="task.done" />
+    <ul v-if="visibleTasks.length" class="note-card__tasks">
+      <NoteItem v-for="task in visibleTasks" :key="task.id" :text="task.text" :done="task.done" />
     </ul>
 
     <p v-else class="note-card__empty">Без пунктов</p>
+
+    <p v-if="hiddenTasksCount > 0" class="note-card__more">Ещё {{ hiddenTasksCount }}</p>
   </article>
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue'
 import BaseButton from '~/components/ui/BaseButton.vue'
 import NoteItem from '~/features/notes/components/NoteItem.vue'
 import type { Note } from '~/features/notes/types'
 
-defineProps<{
+const TASKS_PREVIEW_LIMIT = 4
+
+const props = defineProps<{
   note: Note
 }>()
 
@@ -30,6 +35,9 @@ const emit = defineEmits<{
   edit: []
   remove: []
 }>()
+
+const visibleTasks = computed(() => props.note.tasks.slice(0, TASKS_PREVIEW_LIMIT))
+const hiddenTasksCount = computed(() => props.note.tasks.length - visibleTasks.value.length)
 </script>
 
 <style lang="scss" scoped>
@@ -67,7 +75,8 @@ const emit = defineEmits<{
     gap: $space-2;
   }
 
-  &__empty {
+  &__empty,
+  &__more {
     color: var(--c-text-muted);
   }
 }
