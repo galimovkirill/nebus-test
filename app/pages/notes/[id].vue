@@ -2,7 +2,13 @@
   <div class="note-page">
     <h2 class="note-page__title">Редактировать заметку</h2>
 
-    <NoteForm v-if="note" :note="note" @saved="goToNotes" @cancel="goToNotes" />
+    <NoteForm
+      v-if="note"
+      :note="note"
+      @saved="goToNotes"
+      @cancel="goToNotes"
+      @deleted="goToNotes"
+    />
 
     <EmptyState v-else>
       <template #title>Заметка не найдена</template>

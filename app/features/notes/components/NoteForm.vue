@@ -19,9 +19,33 @@
     </BaseButton>
 
     <div class="note-form__actions">
-      <BaseButton variant="text" @click="emit('cancel')">Отмена</BaseButton>
+      <BaseButton v-if="props.note" variant="danger" @click="isDeleteConfirmOpen = true">
+        Удалить заметку
+      </BaseButton>
+      <BaseButton variant="text" @click="handleCancelClick">Отмена</BaseButton>
       <BaseButton type="submit" variant="primary" :disabled="!canSave">Сохранить</BaseButton>
     </div>
+
+    <ConfirmModal
+      v-if="props.note"
+      v-model:open="isCancelConfirmOpen"
+      title="Отменить редактирование?"
+      message="Несохранённые изменения будут потеряны."
+      confirm-text="Отменить редактирование"
+      cancel-text="Продолжить редактирование"
+      danger
+      @confirm="emit('cancel')"
+    />
+
+    <ConfirmModal
+      v-if="props.note"
+      v-model:open="isDeleteConfirmOpen"
+      title="Удалить заметку?"
+      :message="`Заметка «${props.note.title}» будет удалена без возможности восстановления.`"
+      confirm-text="Удалить"
+      danger
+      @confirm="removeNote"
+    />
   </form>
 </template>
 
@@ -29,6 +53,7 @@
 import { computed, ref } from 'vue'
 import BaseButton from '~/components/ui/BaseButton.vue'
 import BaseInput from '~/components/ui/BaseInput.vue'
+import ConfirmModal from '~/components/ui/ConfirmModal.vue'
 import NoteItem from '~/features/notes/components/NoteItem.vue'
 import type { Note, NoteTask } from '~/features/notes/types'
 import { useNotesStore } from '~/stores/notes'
@@ -40,9 +65,13 @@ const props = defineProps<{
 const emit = defineEmits<{
   saved: []
   cancel: []
+  deleted: []
 }>()
 
 const notesStore = useNotesStore()
+
+const isCancelConfirmOpen = ref(false)
+const isDeleteConfirmOpen = ref(false)
 
 const createTask = (): NoteTask => ({ id: crypto.randomUUID(), text: '', done: false })
 
@@ -82,6 +111,21 @@ const save = () => {
   }
 
   emit('saved')
+}
+
+const handleCancelClick = () => {
+  if (props.note) {
+    isCancelConfirmOpen.value = true
+  } else {
+    emit('cancel')
+  }
+}
+
+const removeNote = () => {
+  if (!props.note) return
+
+  notesStore.removeNote(props.note.id)
+  emit('deleted')
 }
 </script>
 
