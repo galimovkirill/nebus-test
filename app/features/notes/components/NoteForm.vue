@@ -18,7 +18,7 @@
     </BaseButton>
 
     <div class="note-form__actions">
-      <BaseButton @click="emit('cancel')">Отмена</BaseButton>
+      <BaseButton variant="text" @click="emit('cancel')">Отмена</BaseButton>
       <BaseButton type="submit" variant="primary" :disabled="!canSave">Сохранить</BaseButton>
     </div>
   </form>
@@ -98,7 +98,7 @@ const save = () => {
     display: flex;
     align-self: stretch;
     justify-content: flex-end;
-    gap: $space-2;
+    gap: $space-4;
     margin-top: $space-2;
   }
 }

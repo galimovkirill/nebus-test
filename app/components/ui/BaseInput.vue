@@ -35,7 +35,6 @@ const model = defineModel<string>({ default: '' })
   padding: 0 $space-3;
   border: 1px solid var(--c-border-strong);
   border-radius: $radius-md;
-  background: var(--c-surface);
 
   &::placeholder {
     color: var(--c-text-subtle);
@@ -48,6 +47,7 @@ const model = defineModel<string>({ default: '' })
 
   &--borderless {
     border-color: transparent;
+    background: none;
 
     &:focus {
       border-color: transparent;
