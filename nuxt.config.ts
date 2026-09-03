@@ -17,11 +17,22 @@ export default defineNuxtConfig({
     chokidar: pollingOptions
   },
 
-  modules: ['@pinia/nuxt', '@nuxt/eslint'],
+  modules: ['@pinia/nuxt', '@nuxt/eslint', '@nuxt/icon'],
 
   css: ['~/assets/scss/main.scss'],
 
-  components: false,
+  icon: {
+    mode: 'svg',
+    size: '1em',
+    provider: 'none',
+    serverBundle: false,
+    clientBundle: {
+      scan: true,
+      sizeLimitKb: 256
+    }
+  },
+
+  components: { dirs: [] },
 
   imports: {
     autoImport: false

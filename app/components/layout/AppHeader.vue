@@ -2,7 +2,9 @@
   <header class="app-header">
     <h1 class="app-header__title">Заметки</h1>
 
-    <BaseButton variant="primary" @click="isNewNoteModalShown = true"> Новая заметка </BaseButton>
+    <BaseButton variant="primary" icon="lucide:plus" @click="isNewNoteModalShown = true">
+      Новая заметка
+    </BaseButton>
   </header>
 
   <NewNoteModal v-if="isNewNoteModalShown" v-model:open="isNewNoteModalShown" />

@@ -1,3 +1,15 @@
+<template>
+  <button
+    :type="type"
+    :disabled="disabled"
+    :class="['button', `button--${variant}`, `button--${size}`]"
+  >
+    <Icon v-if="icon" :name="icon" />
+
+    <slot />
+  </button>
+</template>
+
 <script setup lang="ts">
 withDefaults(
   defineProps<{
@@ -5,28 +17,22 @@ withDefaults(
     size?: 'md' | 'sm'
     type?: 'button' | 'submit'
     disabled?: boolean
+    icon?: string
   }>(),
   {
     variant: 'secondary',
     size: 'md',
     type: 'button',
-    disabled: false
+    disabled: false,
+    icon: ''
   }
 )
 </script>
 
-<template>
-  <button
-    :type="type"
-    :disabled="disabled"
-    :class="['button', `button--${variant}`, `button--${size}`]"
-  >
-    <slot />
-  </button>
-</template>
-
 <style lang="scss" scoped>
 .button {
+  display: flex;
+  align-items: center;
   gap: $space-2;
   border-radius: $radius-md;
   font-weight: 500;
