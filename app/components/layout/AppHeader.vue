@@ -5,7 +5,7 @@
     <BaseButton variant="primary" @click="isNewNoteModalShown = true"> Новая заметка </BaseButton>
   </header>
 
-  <NewNoteModal v-model:open="isNewNoteModalShown" />
+  <NewNoteModal v-if="isNewNoteModalShown" v-model:open="isNewNoteModalShown" />
 </template>
 
 <script setup lang="ts">

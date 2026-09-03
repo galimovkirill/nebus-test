@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import BaseButton from '~/components/ui/BaseButton.vue'
 import BaseInput from '~/components/ui/BaseInput.vue'
 import BaseModal from '~/components/ui/BaseModal.vue'
@@ -42,7 +42,7 @@ const open = defineModel<boolean>('open', { required: true })
 const notesStore = useNotesStore()
 
 const title = ref('')
-const tasks = ref<NoteTask[]>([])
+const tasks = ref<NoteTask[]>([createTask()])
 
 const filledTasks = computed(() =>
   tasks.value
@@ -53,7 +53,7 @@ const filledTasks = computed(() =>
 const canAddTask = computed(() => filledTasks.value.length === tasks.value.length)
 const canSave = computed(() => title.value.trim() !== '' && filledTasks.value.length > 0)
 
-const createTask = (): NoteTask => {
+function createTask(): NoteTask {
   return { id: crypto.randomUUID(), text: '', done: false }
 }
 
@@ -70,13 +70,6 @@ const save = () => {
 
   open.value = false
 }
-
-watch(open, (value) => {
-  if (value) {
-    title.value = ''
-    tasks.value = [createTask()]
-  }
-})
 </script>
 
 <style lang="scss" scoped>
