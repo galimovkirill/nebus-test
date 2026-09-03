@@ -10,6 +10,7 @@
         v-model:done="task.done"
         editable
         placeholder="Что нужно сделать?"
+        @remove="removeTask(task.id)"
       />
     </ul>
 
@@ -61,6 +62,10 @@ const canSave = computed(() => title.value.trim() !== '' && filledTasks.value.le
 
 const addTask = () => {
   tasks.value.push(createTask())
+}
+
+const removeTask = (id: string) => {
+  tasks.value = tasks.value.filter((task) => task.id !== id)
 }
 
 const save = () => {

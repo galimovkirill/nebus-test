@@ -9,10 +9,19 @@
       borderless
       :placeholder="placeholder"
     />
+
+    <BaseButton
+      v-if="editable"
+      variant="danger"
+      size="sm"
+      icon="lucide:trash-2"
+      @click="emit('remove')"
+    />
   </li>
 </template>
 
 <script lang="ts" setup>
+import BaseButton from '~/components/ui/BaseButton.vue'
 import BaseCheckbox from '~/components/ui/BaseCheckbox.vue'
 import BaseInput from '~/components/ui/BaseInput.vue'
 
@@ -26,6 +35,10 @@ withDefaults(
     placeholder: ''
   }
 )
+
+const emit = defineEmits<{
+  remove: []
+}>()
 
 const done = defineModel<boolean>('done', { default: false })
 const text = defineModel<string>('text', { default: '' })
@@ -44,6 +57,10 @@ const text = defineModel<string>('text', { default: '' })
     &:disabled {
       opacity: 1;
     }
+  }
+
+  :deep(.button) {
+    flex-shrink: 0;
   }
 
   &--done &__text {
