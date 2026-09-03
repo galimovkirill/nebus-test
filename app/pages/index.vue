@@ -5,7 +5,7 @@
         v-for="note in notesStore.notes"
         :key="note.id"
         :note="note"
-        @edit="editNote(note)"
+        @edit="router.push(`/notes/${note.id}`)"
         @remove="notesStore.removeNote(note.id)"
       />
     </div>
@@ -17,32 +17,17 @@
         Создайте первую — в ней можно вести список задач и отмечать выполненное.
       </template>
     </EmptyState>
-
-    <NoteFormModal
-      v-if="isEditModalShown && editedNote"
-      v-model:open="isEditModalShown"
-      :note="editedNote"
-    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import EmptyState from '~/components/ui/EmptyState.vue'
 import NoteCard from '~/features/notes/components/NoteCard.vue'
-import NoteFormModal from '~/features/notes/components/NoteFormModal.vue'
-import type { Note } from '~/features/notes/types'
 import { useNotesStore } from '~/stores/notes'
 
 const notesStore = useNotesStore()
-
-const isEditModalShown = ref(false)
-const editedNote = ref<Note | null>(null)
-
-const editNote = (note: Note) => {
-  editedNote.value = note
-  isEditModalShown.value = true
-}
+const router = useRouter()
 </script>
 
 <style lang="scss" scoped>
