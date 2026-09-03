@@ -9,5 +9,17 @@ export const useNotesStore = defineStore('notes', () => {
     notes.value.unshift(note)
   }
 
-  return { notes, addNote }
+  const updateNote = (updated: Note) => {
+    const index = notes.value.findIndex((note) => note.id === updated.id)
+
+    if (index !== -1) {
+      notes.value[index] = updated
+    }
+  }
+
+  const removeNote = (id: string) => {
+    notes.value = notes.value.filter((note) => note.id !== id)
+  }
+
+  return { notes, addNote, updateNote, removeNote }
 })

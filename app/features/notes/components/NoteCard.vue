@@ -1,6 +1,13 @@
 <template>
   <article class="note-card">
-    <h2 class="note-card__title">{{ note.title }}</h2>
+    <header class="note-card__header">
+      <h2 class="note-card__title">{{ note.title }}</h2>
+
+      <div class="note-card__actions">
+        <BaseButton variant="text" size="sm" icon="lucide:pencil" @click="emit('edit')" />
+        <BaseButton variant="danger" size="sm" icon="lucide:trash-2" @click="emit('remove')" />
+      </div>
+    </header>
 
     <ul v-if="note.tasks.length" class="note-card__tasks">
       <NoteItem v-for="task in note.tasks" :key="task.id" :text="task.text" :done="task.done" />
@@ -11,11 +18,17 @@
 </template>
 
 <script lang="ts" setup>
+import BaseButton from '~/components/ui/BaseButton.vue'
 import NoteItem from '~/features/notes/components/NoteItem.vue'
 import type { Note } from '~/features/notes/types'
 
 defineProps<{
   note: Note
+}>()
+
+const emit = defineEmits<{
+  edit: []
+  remove: []
 }>()
 </script>
 
@@ -30,9 +43,22 @@ defineProps<{
   background: var(--c-surface);
   box-shadow: var(--shadow-sm);
 
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-3;
+  }
+
   &__title {
     font-size: 18px;
     font-weight: 600;
+  }
+
+  &__actions {
+    display: flex;
+    flex-shrink: 0;
+    gap: $space-3;
   }
 
   &__tasks {

@@ -1,11 +1,11 @@
 <template>
   <BaseModal v-model:open="open">
-    <template #title>Создать новую заметку</template>
+    <template #title>{{ note ? 'Редактировать заметку' : 'Создать новую заметку' }}</template>
 
-    <div class="new-note">
+    <div class="note-form">
       <BaseInput v-model="title" placeholder="Название заметки" />
 
-      <ul class="new-note__tasks">
+      <ul class="note-form__tasks">
         <NoteItem
           v-for="task in tasks"
           :key="task.id"
@@ -16,7 +16,7 @@
         />
       </ul>
 
-      <BaseButton variant="text" :disabled="!canAddTask" @click="addTask">
+      <BaseButton variant="text" icon="lucide:plus" :disabled="!canAddTask" @click="addTask">
         Добавить пункт
       </BaseButton>
     </div>
@@ -34,15 +34,23 @@ import BaseButton from '~/components/ui/BaseButton.vue'
 import BaseInput from '~/components/ui/BaseInput.vue'
 import BaseModal from '~/components/ui/BaseModal.vue'
 import NoteItem from '~/features/notes/components/NoteItem.vue'
-import type { NoteTask } from '~/features/notes/types'
+import type { Note, NoteTask } from '~/features/notes/types'
 import { useNotesStore } from '~/stores/notes'
+
+const props = defineProps<{
+  note?: Note
+}>()
 
 const open = defineModel<boolean>('open', { required: true })
 
 const notesStore = useNotesStore()
 
-const title = ref('')
-const tasks = ref<NoteTask[]>([createTask()])
+const createTask = (): NoteTask => ({ id: crypto.randomUUID(), text: '', done: false })
+
+const title = ref(props.note?.title ?? '')
+const tasks = ref<NoteTask[]>(
+  props.note ? props.note.tasks.map((task) => ({ ...task })) : [createTask()]
+)
 
 const filledTasks = computed(() =>
   tasks.value
@@ -53,27 +61,29 @@ const filledTasks = computed(() =>
 const canAddTask = computed(() => filledTasks.value.length === tasks.value.length)
 const canSave = computed(() => title.value.trim() !== '' && filledTasks.value.length > 0)
 
-function createTask(): NoteTask {
-  return { id: crypto.randomUUID(), text: '', done: false }
-}
-
 const addTask = () => {
   tasks.value.push(createTask())
 }
 
 const save = () => {
-  notesStore.addNote({
-    id: crypto.randomUUID(),
+  const note: Note = {
+    id: props.note?.id ?? crypto.randomUUID(),
     title: title.value.trim(),
     tasks: filledTasks.value
-  })
+  }
+
+  if (props.note) {
+    notesStore.updateNote(note)
+  } else {
+    notesStore.addNote(note)
+  }
 
   open.value = false
 }
 </script>
 
 <style lang="scss" scoped>
-.new-note {
+.note-form {
   display: flex;
   flex-direction: column;
   align-items: flex-start;

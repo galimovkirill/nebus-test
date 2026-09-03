@@ -2,20 +2,20 @@
   <header class="app-header">
     <h1 class="app-header__title">Заметки</h1>
 
-    <BaseButton variant="primary" icon="lucide:plus" @click="isNewNoteModalShown = true">
+    <BaseButton variant="primary" icon="lucide:plus" @click="isNoteFormModalShown = true">
       Новая заметка
     </BaseButton>
   </header>
 
-  <NewNoteModal v-if="isNewNoteModalShown" v-model:open="isNewNoteModalShown" />
+  <NoteFormModal v-if="isNoteFormModalShown" v-model:open="isNoteFormModalShown" />
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 import BaseButton from '~/components/ui/BaseButton.vue'
-import NewNoteModal from '~/features/notes/components/NewNoteModal.vue'
+import NoteFormModal from '~/features/notes/components/NoteFormModal.vue'
 
-const isNewNoteModalShown = ref(false)
+const isNoteFormModalShown = ref(false)
 </script>
 
 <style lang="scss" scoped>
