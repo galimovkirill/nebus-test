@@ -23,7 +23,13 @@ const isNoteFormModalShown = ref(false)
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: $space-3;
   padding: 12px 0;
+
+  @media (max-width: $bp-sm) {
+    flex-direction: column;
+    align-items: stretch;
+  }
 
   &__title {
     font-size: 24px;

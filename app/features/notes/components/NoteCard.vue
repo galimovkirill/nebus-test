@@ -61,6 +61,7 @@ const hiddenTasksCount = computed(() => props.note.tasks.length - visibleTasks.v
   &__title {
     font-size: 18px;
     font-weight: 600;
+    overflow-wrap: anywhere;
   }
 
   &__actions {

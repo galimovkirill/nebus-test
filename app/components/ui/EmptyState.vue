@@ -26,6 +26,10 @@
   background: var(--c-surface);
   text-align: center;
 
+  @media (max-width: $bp-sm) {
+    padding: $space-5 $space-4;
+  }
+
   &__title {
     font-size: 20px;
     font-weight: 600;

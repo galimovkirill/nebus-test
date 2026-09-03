@@ -78,6 +78,10 @@ onBeforeUnmount(() => {
     border-radius: $radius-lg;
     background: var(--c-surface);
     box-shadow: var(--shadow-lg);
+
+    @media (max-width: $bp-sm) {
+      padding: $space-4;
+    }
   }
 
   &__title {
@@ -95,6 +99,10 @@ onBeforeUnmount(() => {
     gap: $space-2;
     border-top: 1px solid var(--c-border-strong);
     padding-top: $space-4;
+
+    @media (max-width: $bp-sm) {
+      flex-direction: column;
+    }
   }
 }
 </style>

@@ -86,4 +86,8 @@ a {
   max-width: $content-max;
   margin: 0 auto;
   padding: 0 $space-4;
+
+  @media (min-width: $bp-md) {
+    padding: 0 $space-5;
+  }
 }

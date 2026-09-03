@@ -63,6 +63,10 @@ const removeNote = () => {
     display: grid;
     gap: $space-4;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+
+    @media (max-width: $bp-sm) {
+      grid-template-columns: 1fr;
+    }
   }
 }
 </style>

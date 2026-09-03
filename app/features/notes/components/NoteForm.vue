@@ -209,14 +209,24 @@ const removeNote = () => {
     align-items: center;
     align-self: stretch;
     justify-content: flex-end;
+    flex-wrap: wrap;
     gap: $space-4;
     margin-top: $space-2;
+
+    @media (max-width: $bp-sm) {
+      flex-direction: column;
+      align-items: stretch;
+    }
   }
 
   &__history {
     display: flex;
     gap: $space-2;
     margin-right: auto;
+
+    @media (max-width: $bp-sm) {
+      margin-right: 0;
+    }
   }
 }
 </style>
