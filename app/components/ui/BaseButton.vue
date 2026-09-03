@@ -13,7 +13,7 @@
 <script setup lang="ts">
 withDefaults(
   defineProps<{
-    variant?: 'primary' | 'secondary' | 'text'
+    variant?: 'primary' | 'secondary' | 'text' | 'danger'
     size?: 'md' | 'sm'
     type?: 'button' | 'submit'
     disabled?: boolean
@@ -72,15 +72,30 @@ withDefaults(
     }
   }
 
-  &--text {
+  &--text,
+  &--danger {
     background: transparent;
-    color: var(--c-accent);
     padding: 0;
     min-height: auto;
 
     &:hover:not(:disabled) {
       background: inherit;
+    }
+  }
+
+  &--text {
+    color: var(--c-accent);
+
+    &:hover:not(:disabled) {
       color: var(--c-accent-hover);
+    }
+  }
+
+  &--danger {
+    color: var(--c-danger);
+
+    &:hover:not(:disabled) {
+      color: var(--c-danger-hover);
     }
   }
 }
